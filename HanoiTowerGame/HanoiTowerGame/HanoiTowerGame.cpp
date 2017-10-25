@@ -40,6 +40,7 @@ char block[7][15] = { 0, };
 int random = 0;//랜덤 파일
 ifstream designfile;
 char filename[5][3][8] = { { "3_1.txt", "3_2.txt", "3_3.txt" }, { "4_1.txt", "4_2.txt", "4_3.txt" }, { "5_1.txt", "5_2.txt", "5_3.txt" }, { "6_1.txt", "6_2.txt", "6_3.txt" }, { "7_1.txt", "7_2.txt", "7_3.txt" } };
+bool hint = true;
 
 void gotoxy(int x, int y)// 커서의 위치 이동하는 함수
 {
@@ -81,6 +82,7 @@ void scoreCompare(); // 점수비교
 void getRank(); // 파일에서 랭크 정보들 가져오기
 void saveRank(); //랭크 파일에 저장
 void rankInput(int); //랭킹관련 정보 입력
+void HintScreen(); //힌트 화면
 
 int main(){
 	while (e){
@@ -123,7 +125,7 @@ void PrintScreen(){ //첫 시작 화면
 	gotoxy(67, 8);
 	cout << "│";
 	gotoxy(30, 9);
-	cout << "│             HANOI TOWER            │";
+	cout << "│        REMEMBER HANOI TOWER        │";
 	gotoxy(30, 10);
 	cout << "│";
 	gotoxy(67, 10);
@@ -390,23 +392,63 @@ void ExplainScreen(){
 	gotoxy(31, 7);
 	cout << "└─────────────────┘";
 
-	gotoxy(7, 9);
-	cout << "하노이 타워는 시작한 기둥이 아닌 다른 기둥에 모든 원판을 옮기면 성공하는 게임입니다";
 	gotoxy(7, 11);
-	cout << "단, 한번에 한개의 원판만 옮길 수 있고, 반드시 큰 원판 위에 작은 원판이 놓여야 합니다";
-	gotoxy(7, 13);
-	cout << "방향키를 이용해 게임을 플레이 할 수 있습니다. 처음에는 3층부터 플레이 할 수 있으며 ";
-	gotoxy(10, 15);
-	cout << "코인을 모아 더 높은 층의 하노이 타워를 상점에서 구매해 이용하실 수 있습니다.";
-	gotoxy(13, 17);
-	cout << "게임중에 ESC를 누르면 종료할 수 있으며 저장되지 않으니 주의해주세요";
-	gotoxy(2, 20);
-	cout << "★7층 하노이를 플레이해서 높은 점수를 얻으면 랭킹에 이름을 올릴 수 있습니다! 1등에 도전해보세요★";
-	gotoxy(20, 22);
-	cout << " ← → : 커서 이동 , ↑ : 원판 올리기 , ↓ : 원판 내리기 ";
-	gotoxy(31, 24);
-	cout << "아무키나 누르면 메인으로 이동합니다..";
-	gotoxy(13, 25);
+	cout << "기억 하노이 타워는 시작한 기둥이 아닌 다른 기둥에 모든 원판을 옮기면 성공하는 게임입니다";
+	gotoxy(3, 13);
+	cout << "단, 한번에 한개의 원판만 옮길 수 있고, 반드시 모든 원판은 처음 시작 했을 때 놓여 있던 원판에서";
+	gotoxy(3, 15);
+	cout<<"자신보다 아래 있던 원판보다 위에 놓여야 합니다. 즉, 처음 원판들을 기억한 후 그 모습 그대로 다른 ";
+	gotoxy(10, 17);
+	cout << "기둥에 옮기면 됩니다. 원래의 하노이 타워와 달리 기억력을 발휘해야 하는 게임입니다.";
+	gotoxy(37, 23);
+	cout << "아무키나 누르면 다음으로..";
+	gotoxy(13, 26);
+	gotoxy(0, 28);
+	cout << "──────────────────────────────────────────────────";
+	gotoxy(88, 29);
+	cout << "2512 유시은";
+	b = _getch();
+	system("cls");
+	gotoxy(0, 1);
+	cout << "──────────────────────────────────────────────────";
+	gotoxy(1, 4);
+	cout << "1. 모든 원판은 처음 시작 했을 때 놓여 있던 자리에서 자신보다 아래 있던 원판보다 위에 놓여야 ";
+	gotoxy(1, 5);
+	cout << "합니다. 자신보다 위에 있었던 원판 위에 올릴 수 없습니다. 예를 들어 아래와 같은 타워가 나왔을 경우";
+	gotoxy(15, 7);
+	cout << "□□□□□";
+	gotoxy(15,8);
+	cout << "■□■□■";
+	gotoxy(15, 9);
+	cout << "■■□■■";
+	gotoxy(15, 10);
+	cout << "■□□□■";
+	gotoxy(30, 8);
+	cout << "※ □□□□□ 원판 위에 ■□■□■ 원판을 ";
+	gotoxy(30, 9);
+	cout << "올릴 수 없습니다(□□□□□보다 아래 있었기 때문)";
+	gotoxy(1, 12);
+	cout << "2. 방향키를 이용해 게임을 진행합니다.";
+	gotoxy(2, 14);
+	cout << "← → : 커서 이동 , ↑ : 원판 올리기 , ↓ : 원판 내리기, Enter : 힌트(1번), ESC : 종료(저장 안됨) ";
+	gotoxy(1, 16);
+	cout << "3. 3층부터 시작하며 코인을 모아 더 높은 층의 하노이 타워를 상점에서 구매해 이용하실 수 있습니다.";
+	gotoxy(1, 18);
+	cout << "4. 7층 하노이를 플레이해서 높은 점수를 얻으면 랭킹에 이름을 올릴 수 있습니다! 1등에 도전해보세요.";
+	gotoxy(1, 19);
+	cout << "7층은 구매하면 1번만 플레이 할 수 있습니다. (매번 플레이마다 상점에서 구매하셔야 합니다.)";
+	gotoxy(1, 21);
+	cout << "5. 힌트는 1번, 3초동안 원래 블럭의 모습을 보여줍니다 아래는 예시입니다. (왼쪽 숫자는 순서를 나타냄)";
+	gotoxy(15, 23);
+	cout << "1 □□□□□";
+	gotoxy(15, 24);
+	cout << "2 ■□■□■";
+	gotoxy(15, 25);
+	cout << "3 ■■□■■";
+	gotoxy(15, 26);
+	cout << "4 ■□□□■";
+	gotoxy(40, 25);
+	cout << "아무키나 누르면 메인으로..";
 	gotoxy(0, 28);
 	cout << "──────────────────────────────────────────────────";
 	gotoxy(88, 29);
@@ -471,7 +513,7 @@ void setStartHanoi(){
 	getRank();
 	for (int i = 0; i < cnt; i++){
 		hanoi[i].stick = 1;
-		hanoi[i].width=(i+1)*2+1;
+		hanoi[i].width=i;
 		hanoi[i].floor = i + 1;
 		hanoi[i].color = 9 + i;
 		hanoi[i].up = 0;
@@ -479,6 +521,7 @@ void setStartHanoi(){
 	cursor = 0;
 	move_cnt = 0;
 	n = -1;
+	hint = true;
 }
 
 void StartGame(){
@@ -501,6 +544,9 @@ void StartGame(){
 		case 27:
 			setStartHanoi();
 			return;
+			break;
+		case 13:
+			if (hint) HintScreen();
 			break;
 		}
 		HanoiDraw();
@@ -600,4 +646,25 @@ void rankInput(int a){
 
 	strcpy(player[a].name, n);
 	player[a].score = move_cnt;
+}
+
+void HintScreen(){
+	int a= 11;
+
+	system("cls");
+	gotoxy(47, 8);
+	cout << "힌 트";
+	for (int i = 0; i < select_floor; i++){
+		gotoxy(33, a + i);
+		setcolor(15, 6);
+		cout << i + 1 << endl;
+		gotoxy(35, a + i);
+		hanoi[i].drawfloor();
+	}
+	gotoxy(88, 29);
+	setcolor(15, 6);
+	cout << "2512 유시은";
+	Sleep(3000);
+
+	hint = false;
 }
