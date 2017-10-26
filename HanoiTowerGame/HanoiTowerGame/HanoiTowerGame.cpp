@@ -12,12 +12,18 @@ using namespace std;
 
 struct Hanoi{
 	int stick; //몇 번째 막대에 있는지
-	int width; //길이
 	int floor; //몇 층에 있는지
 	int color;
 	int up;
 
+	Hanoi(){
+		stick = 1;
+		up = 0;
+	}
+
 	void drawfloor();
+	void blockdown();
+	void blockup();
 };
 
 struct Player{
@@ -84,6 +90,36 @@ void saveRank(); //랭크 파일에 저장
 void rankInput(int); //랭킹관련 정보 입력
 void HintScreen(); //힌트 화면
 
+void Hanoi::drawfloor(){
+	if (designfile.is_open()){
+		for (int i = 0; i < floor; i++){
+			designfile >> block[i];
+		}
+	}
+	for (int i = 0; i < 15; i++){
+		if (block[floor - 1][i] < 'A'){
+			color = (int)(block[floor - 1][i] - '0');
+		}
+		else{
+			color = (int)(block[floor - 1][i] - 'A') + 10;
+		}
+		setcolor(color, color);
+		cout << "■";
+	}
+	designfile.close();
+}
+
+void Hanoi::blockdown(){
+	up = 0;
+	move_cnt++;
+	stick = cursor + 1;
+	n = -1;
+}
+
+void Hanoi::blockup(){
+	up = 1;
+}
+
 int main(){
 	while (e){
 		system("cls");
@@ -95,25 +131,6 @@ int main(){
 
 	delete[] hanoi;
 	return 0;
-}
-
-void Hanoi::drawfloor(){
-	if (designfile.is_open()){
-		for (int i = 0; i < floor; i++){
-			designfile >> block[i];
-		}
-	}
-	for (int i = 0; i < 15; i++){
-		if (block[floor-1][i] < 'A'){
-			color = (int)(block[floor-1][i] - '0');
-		}
-		else{
-			color = (int)(block[floor-1][i] - 'A') + 10;
-		}
-		setcolor(color, color);
-		cout << "■";
-	}
-	designfile.close();
 }
 
 void PrintScreen(){ //첫 시작 화면
@@ -302,6 +319,10 @@ void HanoiDraw(){
 	if (floor_cnt == 7 && select_floor==7){
 		gotoxy(83, 1);
 		cout << "최고점수 : " << player[0].score;
+	}
+	if (hint){
+		gotoxy(2, 28);
+		cout << "힌트(Enter)";
 	}
 	gotoxy(88, 29);
 	cout << "2512 유시은";
@@ -512,11 +533,7 @@ void Selectfloor(){
 void setStartHanoi(){
 	getRank();
 	for (int i = 0; i < cnt; i++){
-		hanoi[i].stick = 1;
-		hanoi[i].width=i;
-		hanoi[i].floor = i + 1;
-		hanoi[i].color = 9 + i;
-		hanoi[i].up = 0;
+		hanoi[i].floor = i+1;
 	}
 	cursor = 0;
 	move_cnt = 0;
@@ -571,7 +588,7 @@ void StartGame(){
 void Up(){
 	for (int i = 0; i < cnt; i++){
 		if (hanoi[i].stick == cursor + 1 && n == -1){
-			hanoi[i].up = 1;
+			hanoi[i].blockup();
 			n = i;
 			return;
 		}
@@ -582,11 +599,8 @@ void Down(){
 	int j=0;
 	for (int i = 0; i < cnt; i++){
 		if ((hanoi[i].stick == cursor + 1) && (hanoi[n].up == 1)){
-			if (hanoi[n].width <= hanoi[i].width){
-				hanoi[n].up = 0;
-				move_cnt++;
-				hanoi[n].stick = cursor + 1;
-				n = -1;
+			if (hanoi[n].floor <= hanoi[i].floor){
+				hanoi[n].blockdown();
 				return;
 			}
 			else return;
@@ -595,10 +609,7 @@ void Down(){
 	}
 
 	if (j == 0){ // 그 장대에 아무 블럭이 없을때
-		hanoi[n].up = 0;
-		move_cnt++;
-		hanoi[n].stick = cursor + 1;
-		n = -1;
+		hanoi[n].blockdown();
 		return;
 	}
 }
@@ -652,13 +663,15 @@ void HintScreen(){
 	int a= 11;
 
 	system("cls");
-	gotoxy(47, 8);
+	gotoxy(47, 7);
 	cout << "힌 트";
 	for (int i = 0; i < select_floor; i++){
-		gotoxy(33, a + i);
+		gotoxy(15, a + i);
+		hanoi[i].drawfloor(); 
+		gotoxy(45, a + (i*2));
 		setcolor(15, 6);
 		cout << i + 1 << endl;
-		gotoxy(35, a + i);
+		gotoxy(47, a + (i*2));
 		hanoi[i].drawfloor();
 	}
 	gotoxy(88, 29);
