@@ -311,7 +311,6 @@ void Store(){
 }
 
 void HanoiDraw(){
-	system("cls");
 	int x = 3;
 	int y1 = 20, y2 = 20, y3 = 20;
 	gotoxy(2,1);
@@ -333,50 +332,56 @@ void HanoiDraw(){
 			if (hanoi[i].up == 1){
 				gotoxy(3, 9);
 				hanoi[i].drawfloor();
+				cout << "                                                                         ";
 				break;
 			}
-			else{
-				gotoxy(17, 9);
-				cout << "∩";
+			else if (i == cnt - 1){
+				gotoxy(3, 9);
+				cout << "              ∩                                                                             ";
 			}
 		}
 		break;
 	case 1:
 		for (int i = 0; i < cnt; i++){
 			if (hanoi[i].up == 1){
+				gotoxy(3, 9);
+				cout << "                             ";
 				gotoxy(35, 9);
 				hanoi[i].drawfloor();
+				cout << "                             ";
 				break;
 			}
-			else{
-				gotoxy(49, 9);
-				cout << "∩";
+			else if (i == cnt - 1){
+				gotoxy(3, 9);
+				cout << "                                              ∩                                           ";
 			}
 		}
 		break;
 	case 2:
 		for (int i = 0; i < cnt; i++){
 			if (hanoi[i].up == 1){
+				gotoxy(3, 9);
+				cout << "                                                                         ";
 				gotoxy(67, 9);
 				hanoi[i].drawfloor();
 				break;
 			}
-			else{
-				gotoxy(81, 9);
-				cout << "∩";
+			else if (i == cnt - 1){
+				gotoxy(3, 9);
+				cout << "                                                                              ∩           ";
 			}
 		}
 		break;
 	}
 
 	setcolor(15, 6);
-	for (int i = 11; i < 21; i++){
-		gotoxy(17, i);
-		cout << "||";
-		gotoxy(49, i);
-		cout << "||";
-		gotoxy(81, i);
-		cout << "||";
+	for (int i = 20-select_floor; i >=11; i--){
+		gotoxy(3, i);
+		cout << "              ||              ";
+		gotoxy(35, i);
+		cout << "              ||              ";
+		gotoxy(67, i);
+		cout << "              ||              ";
 	}
 
 	for (int i = cnt-1; i >=0; i--){
@@ -395,6 +400,26 @@ void HanoiDraw(){
 	}
 
 	setcolor(15, 6);
+
+	if (y1 > 20 - select_floor){
+		for (int i = y1; i >= 20 - select_floor; i--){
+			gotoxy(3, i);
+			cout << "              ||              ";
+		}
+	}
+	if (y2 > 20 - select_floor){
+		for (int i = y2; i >= 20 - select_floor; i--){
+			gotoxy(35, i);
+			cout << "              ||              ";
+		}
+	}
+	if (y3 > 20 - select_floor){
+		for (int i = y3; i >= 20 - select_floor; i--){
+			gotoxy(67, i);
+			cout << "              ||              ";
+		}
+	}
+
 	gotoxy(0, 21);
 	cout << "式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式";
 }
@@ -518,6 +543,7 @@ void Selectfloor(){
 		srand((unsigned int)time(NULL));
 		random = rand() % 3;
 		designfile.open(filename[select_floor - 3][random]);
+		system("cls");
 		HanoiDraw();
 		StartGame();
 		if (floor_cnt == 7 && select_floor==7){
@@ -680,4 +706,6 @@ void HintScreen(){
 	Sleep(3000);
 
 	hint = false;
+
+	system("cls");
 }
