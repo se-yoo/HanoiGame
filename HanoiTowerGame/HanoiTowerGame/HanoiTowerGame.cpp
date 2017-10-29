@@ -130,6 +130,7 @@ int main(){
 	}
 
 	delete[] hanoi;
+	delete[] player;
 	return 0;
 }
 
@@ -398,7 +399,6 @@ void HanoiDraw(){
 			hanoi[i].drawfloor();
 		}
 	}
-
 	setcolor(15, 6);
 
 	if (y1 > 20 - select_floor){
@@ -419,7 +419,6 @@ void HanoiDraw(){
 			cout << "              ||              ";
 		}
 	}
-
 	gotoxy(0, 21);
 	cout << "式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式";
 }
