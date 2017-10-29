@@ -584,7 +584,14 @@ void StartGame(){
 			Down();
 			break;
 		case 27:
+			system("cls");
+			gotoxy(30, 14);
+			cout << "실패했습니다 저장되지 않고 메인으로 돌아갑니다";
+			Sleep(1500);
 			setStartHanoi();
+			if (floor_cnt == 7 && select_floor == 7){
+				floor_cnt--;
+			}
 			return;
 			break;
 		case 13:
@@ -600,6 +607,8 @@ void StartGame(){
 	coin += coin2;
 	Sleep(500);
 	system("cls");
+	gotoxy(47,12);
+	cout << move_cnt << "번 이동";
 	gotoxy(38,14);
 	cout <<"획득코인 : "<<coin2<<" 성공했습니다";
 	Sleep(1000);
