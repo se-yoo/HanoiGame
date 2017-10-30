@@ -130,7 +130,6 @@ int main(){
 	}
 
 	delete[] hanoi;
-	delete[] player;
 	return 0;
 }
 
@@ -175,7 +174,6 @@ void PrintScreen(){ //첫 시작 화면
 		break;
 	case '4': 
 		e = false;
-		return;
 		break;
 	default: PrintScreen();
 	}
@@ -695,7 +693,7 @@ void rankInput(int a){
 
 void HintScreen(){
 	int a= 11;
-
+	
 	system("cls");
 	gotoxy(47, 7);
 	cout << "힌 트";
