@@ -193,6 +193,8 @@ void RankScreen(){
 		gotoxy(38, 11+i*2);
 		printf("%4d %10s %5d\n",player[i].rank, player[i].name, player[i].score);
 	}
+	gotoxy(35, 27);
+	cout << "아무키나 누르면 메인으로 돌아갑니다";
 	gotoxy(88, 29);
 	cout << "2512 유시은";
 
@@ -501,7 +503,9 @@ void ExplainScreen(){
 
 void Selectfloor(){
 	char choose;
+	system("Color 6F");
 	getReadyInfo();
+	
 	system("cls");
 
 	gotoxy(0, 1);
@@ -524,6 +528,8 @@ void Selectfloor(){
 		cout << "1. 상점(더 높은 층 구매)";
 		break;
 	}
+	gotoxy(32, 25);
+	cout << "ESC를 누르면 메인으로 돌아갑니다";
 	gotoxy(0, 28);
 	cout << " ◇ ◆ ◇ ◆ ◇ ◆ ◇ ◆ ◇ ◆ ◇ ◆ ◇ ◆ ◇ ◆ ◇ ◆ ◇ ◆ ◇ ◆ ◇ ◆ ◇ ◆ ◇ ◆ ◇ ◆ ◇ ◆ ◇ ";
 	gotoxy(88, 29);
@@ -531,6 +537,7 @@ void Selectfloor(){
 	choose = _getch();
 	if (choose == '1'){
 		Store();
+		Selectfloor();
 	}
 	else if (choose > '1' && choose < (floor_cnt+'0')){
 		cnt=(int)(choose-'0')+1;
@@ -548,7 +555,9 @@ void Selectfloor(){
 		}
 		saveInfo();
 	}
-	else{
+	else if (choose == 27){
+		return;
+	}else{
 		Selectfloor();
 	}
 }
