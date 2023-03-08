@@ -3,7 +3,7 @@
 
 - 다양한 타워 디자인과 층을 제공하는 하노이 타워 게임
 <div>
-  <img src="https://img.shields.io/badge/C++-00599C?style=flat-square&logo=cplusplus&logoColor=white">
+  <img src="https://img.shields.io/badge/language-C++-00599C?style=flat-square" />
 </div>
 <br>
 
